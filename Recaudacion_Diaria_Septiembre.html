@@ -1,0 +1,307 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Recaudación Diaria Septiembre</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: cabecera con cifra guía · tiles por canal · gráfico con controles · tabla de respaldo */
+:root{
+  --surface:#fbfbfa; --panel:#ffffff; --line:#e4e4e0; --line-soft:#eeeeea;
+  --ink:#121311; --ink-2:#55564f; --ink-3:#8b8c82;
+  --dep:#2a78d6; --pos:#eb6834; --wal:#1baf7a; --idt:#6250d6; --total:#121311;
+  --band:#f1f1ed; --accent-soft:#eaf1fb;
+  --f-display:'Archivo',system-ui,sans-serif;
+  --f-body:'IBM Plex Sans',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --surface:#131412; --panel:#1b1c1a; --line:#32332f; --line-soft:#26272400;
+  --ink:#f1f1ec; --ink-2:#bdbeb4; --ink-3:#86877d;
+  --dep:#3987e5; --pos:#f2794a; --wal:#2ac78d; --idt:#9085e9; --total:#f1f1ec;
+  --band:#202119; --accent-soft:#1d2a3c; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --surface:#131412; --panel:#1b1c1a; --line:#32332f; --line-soft:#26272400;
+  --ink:#f1f1ec; --ink-2:#bdbeb4; --ink-3:#86877d;
+  --dep:#3987e5; --pos:#f2794a; --wal:#2ac78d; --idt:#9085e9; --total:#f1f1ec;
+  --band:#202119; --accent-soft:#1d2a3c; color-scheme:dark;
+}
+body{background:var(--surface);color:var(--ink);font-family:var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:28px 40px;}
+.wrap{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,3.4vw,2.1rem);
+  letter-spacing:-.018em;margin:0;text-wrap:balance;line-height:1.12}
+.sub{color:var(--ink-2);font-size:.94rem;margin:7px 0 0;max-width:62ch;line-height:1.5}
+.hero{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px 30px;
+  padding-bottom:18px;border-bottom:1px solid var(--line)}
+.hero .big{font-family:var(--f-display);font-weight:700;font-size:clamp(2rem,5vw,2.9rem);
+  letter-spacing:-.025em;font-variant-numeric:tabular-nums;line-height:1}
+.hero .cap{font-size:.75rem;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-3);
+  margin-bottom:5px;display:block}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:12px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:14px 15px;
+  display:flex;flex-direction:column;gap:5px;min-width:0}
+.tile .nm{display:flex;align-items:center;gap:7px;font-size:.8rem;color:var(--ink-2);font-weight:500}
+.dot{width:9px;height:9px;border-radius:2px;flex:none}
+.tile .v{font-family:var(--f-display);font-weight:600;font-size:1.28rem;
+  font-variant-numeric:tabular-nums;letter-spacing:-.015em}
+.tile .p{font-size:.78rem;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:18px 18px 10px;min-width:0}
+.ctl{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.legend{display:flex;flex-wrap:wrap;gap:7px}
+.lg{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:transparent;
+  border-radius:99px;padding:5px 12px;font-size:.82rem;color:var(--ink);cursor:pointer;
+  font-family:var(--f-body);font-weight:500;transition:background .13s,opacity .13s}
+.lg:hover{background:var(--accent-soft)}
+.lg[aria-pressed="false"]{opacity:.42}
+.lg:focus-visible,.seg button:focus-visible{outline:2px solid var(--dep);outline-offset:2px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.seg button{background:transparent;border:0;padding:6px 13px;font-size:.81rem;cursor:pointer;
+  color:var(--ink-2);font-family:var(--f-body);font-weight:500}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink)}
+.chartbox{position:relative;width:100%}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.tt{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);
+  border-radius:8px;padding:9px 11px;font-size:.79rem;box-shadow:0 5px 18px rgba(0,0,0,.13);
+  min-width:168px;opacity:0;transition:opacity .1s;z-index:5}
+.tt.on{opacity:1}
+.tt .dy{font-family:var(--f-display);font-weight:600;font-size:.88rem;margin-bottom:6px;color:var(--ink)}
+.tt .rw{display:flex;align-items:center;gap:7px;justify-content:space-between;margin-top:3px;color:var(--ink-2)}
+.tt .rw b{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+.tt .lbl{display:flex;align-items:center;gap:6px}
+.note{font-size:.8rem;color:var(--ink-3);line-height:1.55;margin:4px 0 0}
+details{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:14px 16px}
+summary{cursor:pointer;font-family:var(--f-display);font-weight:600;font-size:.96rem}
+summary:focus-visible{outline:2px solid var(--dep);outline-offset:3px}
+.tscroll{overflow-x:auto;margin-top:12px}
+table{border-collapse:collapse;width:100%;font-size:.82rem;font-variant-numeric:tabular-nums}
+th,td{padding:6px 10px;text-align:right;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+th{color:var(--ink-3);font-weight:600;font-size:.74rem;text-transform:uppercase;letter-spacing:.055em;
+  text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+tr.dom td{color:var(--ink-3)}
+tfoot td{font-weight:600;border-top:1px solid var(--line);border-bottom:0}
+.src{font-size:.76rem;color:var(--ink-3);line-height:1.6;border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:620px){.hero{gap:8px 18px}.panel{padding:14px 13px 8px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>Recaudación diaria · septiembre 2026</h1>
+    <p class="sub">Los cuatro canales de cobro, día a día, conciliados contra las cuentas BCP.
+      Usa la leyenda para aislar un canal: el eje se reescala solo.</p>
+  </header>
+
+  <div class="hero">
+    <div><span class="cap">Recaudación total del mes</span>
+      <div class="big" id="heroTot">S/ 10,868,473.82</div></div>
+    <div><span class="cap">Promedio por día hábil</span>
+      <div class="big" style="font-size:1.5rem" id="heroAvg">—</div></div>
+    <div><span class="cap">Días con operación</span>
+      <div class="big" style="font-size:1.5rem">26 de 30</div></div>
+  </div>
+
+  <div class="tiles" id="tiles"></div>
+
+  <section class="panel">
+    <div class="ctl">
+      <div class="legend" id="legend"></div>
+      <div class="seg" role="group" aria-label="Modo de visualización">
+        <button type="button" id="mAbs" aria-pressed="true">Soles</button>
+        <button type="button" id="mIdx" aria-pressed="false">Índice base 100</button>
+      </div>
+    </div>
+    <div class="chartbox" id="cbox">
+      <svg id="chart" viewBox="0 0 1000 420" role="img"
+           aria-label="Gráfico de líneas de la recaudación diaria por canal"></svg>
+      <div class="tt" id="tt"></div>
+    </div>
+    <p class="note" id="modeNote">Las bandas grises son los domingos (6, 13, 20 y 27), cuando la operación se detiene.</p>
+  </section>
+
+  <details>
+    <summary>Ver la tabla de datos</summary>
+    <div class="tscroll"><table id="tbl"></table></div>
+  </details>
+
+  <p class="src">Fuente: conciliación de depósitos de motorizados (cuenta 087), conciliación POS
+    Culqui y Niubiz (cuentas 099, 027 y 046) y conciliación de wallet Nagi (cuenta 038), más S/ 6,032.98 de abonos que entraron sin voucher y están por identificar.
+    Montos por fecha de operación. El total del mes coincide con la recaudación conciliada
+    de S/ 10,868,473.82.</p>
+</div>
+
+<script>
+const DATA = [
+{d:1,dep:358003.71,pos:35743.35,wal:19168.60,idt:0.00},
+{d:2,dep:372677.90,pos:34018.00,wal:18516.00,idt:0.00},
+{d:3,dep:300539.00,pos:45948.90,wal:20869.69,idt:0.00},
+{d:4,dep:371228.00,pos:37089.01,wal:20803.16,idt:3226.98},
+{d:5,dep:343946.82,pos:37711.90,wal:17598.98,idt:0.00},
+{d:6,dep:6943.00,pos:0.00,wal:2097.38,idt:0.00},
+{d:7,dep:411412.50,pos:44010.00,wal:26601.69,idt:51.00},
+{d:8,dep:368302.02,pos:39062.90,wal:23044.81,idt:0.00},
+{d:9,dep:412822.00,pos:30147.04,wal:21335.36,idt:1528.00},
+{d:10,dep:363730.00,pos:32160.00,wal:16797.23,idt:0.00},
+{d:11,dep:376017.00,pos:32214.95,wal:18089.52,idt:0.00},
+{d:12,dep:338935.00,pos:28202.75,wal:17605.61,idt:89.00},
+{d:13,dep:3424.00,pos:0.00,wal:3763.13,idt:0.00},
+{d:14,dep:414794.00,pos:38154.15,wal:26444.48,idt:0.00},
+{d:15,dep:372819.00,pos:31606.91,wal:21965.95,idt:0.00},
+{d:16,dep:339159.00,pos:27744.00,wal:19741.03,idt:302.00},
+{d:17,dep:339862.22,pos:24769.00,wal:20599.35,idt:99.00},
+{d:18,dep:387847.00,pos:25693.00,wal:22577.95,idt:13.00},
+{d:19,dep:350848.00,pos:24111.00,wal:14359.29,idt:100.00},
+{d:20,dep:8385.00,pos:159.00,wal:4773.88,idt:0.00},
+{d:21,dep:419278.00,pos:38783.08,wal:23390.70,idt:90.00},
+{d:22,dep:355351.86,pos:27907.90,wal:24509.37,idt:50.00},
+{d:23,dep:340525.14,pos:27100.00,wal:19957.32,idt:0.00},
+{d:24,dep:332122.10,pos:30279.50,wal:23912.56,idt:10.00},
+{d:25,dep:309600.17,pos:28045.01,wal:17501.96,idt:0.00},
+{d:26,dep:304186.81,pos:27598.00,wal:17567.19,idt:0.00},
+{d:27,dep:12752.00,pos:0.00,wal:2696.93,idt:0.00},
+{d:28,dep:410106.50,pos:42622.00,wal:23602.26,idt:0.00},
+{d:29,dep:378576.92,pos:32113.00,wal:17125.95,idt:388.00},
+{d:30,dep:361593.00,pos:31765.06,wal:14876.43,idt:86.00}
+];
+const SER = [
+  {k:'tot', nm:'Total',      col:'var(--total)', w:2.6, on:true},
+  {k:'dep', nm:'Depósitos',  col:'var(--dep)',   w:2,   on:true},
+  {k:'pos', nm:'POS',        col:'var(--pos)',   w:2,   on:true},
+  {k:'wal', nm:'Wallet',     col:'var(--wal)',   w:2,   on:true},
+  {k:'idt', nm:'Por identificar', col:'var(--idt)', w:2, on:true}
+];
+DATA.forEach(r => r.tot = +(r.dep + r.pos + r.wal + r.idt).toFixed(2));
+const DOM = DATA.filter(r => new Date(2026,8,r.d).getDay()===0).map(r=>r.d);
+const esDom = d => DOM.includes(d);
+const fmt = n => 'S/ ' + n.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtK = n => n>=1000 ? (n/1000).toLocaleString('es-PE',{maximumFractionDigits:0})+'k' : n.toFixed(0);
+let modo = 'abs';
+
+const tot = k => DATA.reduce((s,r)=>s+r[k],0);
+document.getElementById('heroAvg').textContent =
+  fmt(DATA.filter(r=>!esDom(r.d)).reduce((s,r)=>s+r.tot,0)/DATA.filter(r=>!esDom(r.d)).length);
+
+// tiles
+document.getElementById('tiles').innerHTML = SER.filter(s=>s.k!=='tot').map(s=>{
+  const t = tot(s.k);
+  return `<div class="tile"><div class="nm"><span class="dot" style="background:${s.col}"></span>${s.nm}</div>
+    <div class="v">${fmt(t)}</div><div class="p">${(t/tot('tot')*100).toFixed(1)}% del mes · ${fmt(t/26)} por día hábil</div></div>`;
+}).join('');
+
+// leyenda
+const lg = document.getElementById('legend');
+lg.innerHTML = SER.map(s=>`<button type="button" class="lg" data-k="${s.k}" aria-pressed="true">
+  <span class="dot" style="background:${s.col}"></span>${s.nm}</button>`).join('');
+lg.addEventListener('click', e=>{
+  const b = e.target.closest('.lg'); if(!b) return;
+  const s = SER.find(x=>x.k===b.dataset.k);
+  if(s.on && SER.filter(x=>x.on).length===1) return;
+  s.on = !s.on; b.setAttribute('aria-pressed', s.on);
+  draw();
+});
+const setModo = m => {
+  modo = m;
+  mAbs.setAttribute('aria-pressed', m==='abs'); mIdx.setAttribute('aria-pressed', m==='idx');
+  document.getElementById('modeNote').textContent = m==='abs'
+    ? 'Las bandas grises son los domingos (6, 13, 20 y 27), cuando la operación se detiene.'
+    : 'Cada canal vale 100 en su propio promedio de día hábil, así se comparan movimientos aunque las escalas sean muy distintas.';
+  draw();
+};
+mAbs.onclick = ()=>setModo('abs'); mIdx.onclick = ()=>setModo('idx');
+
+const base = {};
+SER.forEach(s=>{ const h=DATA.filter(r=>!esDom(r.d)); base[s.k]=h.reduce((a,r)=>a+r[s.k],0)/h.length; });
+const val = (r,k) => modo==='abs' ? r[k] : (r[k]/base[k]*100);
+
+const SVG='http://www.w3.org/2000/svg';
+const el=(n,a)=>{const e=document.createElementNS(SVG,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const W=1000,H=420,M={t:16,r:16,b:40,l:62};
+
+function draw(){
+  const svg=document.getElementById('chart'); svg.textContent='';
+  const vis=SER.filter(s=>s.on);
+  const iw=W-M.l-M.r, ih=H-M.t-M.b;
+  let raw=0; DATA.forEach(r=>vis.forEach(s=>{const v=val(r,s.k); if(v>raw)raw=v;}));
+  raw = raw*1.06 || 1;
+  // escala con cortes redondos: 1, 2, 2.5 o 5 por década
+  const pot=Math.pow(10,Math.floor(Math.log10(raw/5)));
+  const paso=[1,2,2.5,5,10].map(f=>f*pot).find(f=>raw/f<=5.5);
+  const mx=paso*Math.ceil(raw/paso), nT=Math.round(mx/paso);
+  const X=d=>M.l+(d-1)/29*iw, Y=v=>M.t+ih-(v/mx)*ih;
+
+  DOM.forEach(d=>{
+    const w=iw/29*0.8;
+    svg.appendChild(el('rect',{x:X(d)-w/2,y:M.t,width:w,height:ih,fill:'var(--band)'}));
+  });
+  for(let i=0;i<=nT;i++){
+    const v=paso*i, y=Y(v);
+    svg.appendChild(el('line',{x1:M.l,y1:y,x2:W-M.r,y2:y,stroke:'var(--line-soft)','stroke-width':1}));
+    const t=el('text',{x:M.l-11,y:y+4,'text-anchor':'end','font-size':12,fill:'var(--ink-3)'});
+    t.textContent = modo==='abs' ? fmtK(v) : v.toFixed(0);
+    svg.appendChild(t);
+  }
+  svg.appendChild(el('line',{x1:M.l,y1:M.t+ih,x2:W-M.r,y2:M.t+ih,stroke:'var(--line)','stroke-width':1}));
+  DATA.forEach(r=>{
+    if(r.d%2 && r.d!==29 || r.d===30){
+      const t=el('text',{x:X(r.d),y:H-M.b+20,'text-anchor':'middle','font-size':12,fill:'var(--ink-3)'});
+      t.textContent=r.d; svg.appendChild(t);
+    }
+  });
+  const ax=el('text',{x:M.l+iw/2,y:H-6,'text-anchor':'middle','font-size':12,fill:'var(--ink-3)'});
+  ax.textContent='día de septiembre'; svg.appendChild(ax);
+
+  vis.forEach(s=>{
+    const d=DATA.map(r=>`${X(r.d).toFixed(1)},${Y(val(r,s.k)).toFixed(1)}`).join(' L ');
+    svg.appendChild(el('path',{d:'M '+d,fill:'none',stroke:s.col,'stroke-width':s.w,
+      'stroke-linejoin':'round','stroke-linecap':'round'}));
+  });
+  const cl=el('line',{id:'cross',x1:0,y1:M.t,x2:0,y2:M.t+ih,stroke:'var(--ink-3)',
+    'stroke-width':1,'stroke-dasharray':'3 3',opacity:0}); svg.appendChild(cl);
+  const g=el('g',{id:'pts'}); svg.appendChild(g);
+
+  const box=document.getElementById('cbox'), tt=document.getElementById('tt');
+  const move=ev=>{
+    const rc=svg.getBoundingClientRect();
+    const px=(ev.touches?ev.touches[0].clientX:ev.clientX)-rc.left;
+    const sx=px/rc.width*W;
+    let d=Math.round((sx-M.l)/iw*29)+1; d=Math.max(1,Math.min(30,d));
+    const r=DATA[d-1];
+    cl.setAttribute('x1',X(d)); cl.setAttribute('x2',X(d)); cl.setAttribute('opacity',1);
+    g.textContent='';
+    vis.forEach(s=>{
+      g.appendChild(el('circle',{cx:X(d),cy:Y(val(r,s.k)),r:4.6,fill:s.col,
+        stroke:'var(--panel)','stroke-width':2}));
+    });
+    tt.innerHTML=`<div class="dy">${d} de septiembre${esDom(d)?' · domingo':''}</div>`+
+      vis.map(s=>`<div class="rw"><span class="lbl"><span class="dot" style="background:${s.col}"></span>${s.nm}</span>
+        <b>${modo==='abs'?fmt(r[s.k]):val(r,s.k).toFixed(1)}</b></div>`).join('');
+    tt.classList.add('on');
+    const bw=box.getBoundingClientRect(), lx=X(d)/W*bw.width;
+    tt.style.left=Math.min(Math.max(lx+16,0),bw.width-tt.offsetWidth-4)+'px';
+    tt.style.top='10px';
+  };
+  svg.onmousemove=move; svg.ontouchmove=e=>{move(e);e.preventDefault();};
+  svg.onmouseleave=()=>{tt.classList.remove('on');cl.setAttribute('opacity',0);g.textContent='';};
+}
+draw();
+
+// tabla
+const DIAS=['dom','lun','mar','mié','jue','vie','sáb'];
+document.getElementById('tbl').innerHTML =
+ `<thead><tr><th>Fecha</th><th>Día</th><th>Depósitos</th><th>POS</th><th>Wallet</th><th>Por ident.</th><th>Total</th></tr></thead><tbody>`+
+ DATA.map(r=>`<tr class="${esDom(r.d)?'dom':''}"><td>${r.d}/09</td>
+   <td>${DIAS[new Date(2026,8,r.d).getDay()]}</td>
+   <td>${r.dep.toLocaleString('es-PE',{minimumFractionDigits:2})}</td>
+   <td>${r.pos.toLocaleString('es-PE',{minimumFractionDigits:2})}</td>
+   <td>${r.wal.toLocaleString('es-PE',{minimumFractionDigits:2})}</td>
+   <td>${r.idt.toLocaleString('es-PE',{minimumFractionDigits:2})}</td>
+   <td>${r.tot.toLocaleString('es-PE',{minimumFractionDigits:2})}</td></tr>`).join('')+
+ `</tbody><tfoot><tr><td colspan="2">Total</td>
+   <td>${tot('dep').toLocaleString('es-PE',{minimumFractionDigits:2})}</td>
+   <td>${tot('pos').toLocaleString('es-PE',{minimumFractionDigits:2})}</td>
+   <td>${tot('wal').toLocaleString('es-PE',{minimumFractionDigits:2})}</td>
+   <td>${tot('idt').toLocaleString('es-PE',{minimumFractionDigits:2})}</td>
+   <td>${tot('tot').toLocaleString('es-PE',{minimumFractionDigits:2})}</td></tr></tfoot>`;
+</script>
+
+</body></html>

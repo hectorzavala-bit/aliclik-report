@@ -1,0 +1,368 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Adopción de Nagi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: hitos del despliegue · curva de altas · actividad por zona · tasa de adopción */
+:root{
+  --surface:#fbfbfa; --panel:#fff; --line:#e4e4e0; --line-soft:#efefeb;
+  --ink:#121311; --ink-2:#55564f; --ink-3:#8b8c82;
+  --z1:#2a78d6; --z2:#eb6834; --z3:#1baf7a; --z4:#eda100; --z5:#6250d6; --z6:#8b8c82;
+  --band:#f1f1ed; --soft:#eaf1fb; --ok:#1baf7a; --warn:#eb6834;
+  --f-d:'Archivo',system-ui,sans-serif; --f-b:'IBM Plex Sans',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --surface:#131412; --panel:#1b1c1a; --line:#32332f; --line-soft:#262724;
+  --ink:#f1f1ec; --ink-2:#bdbeb4; --ink-3:#86877d;
+  --z1:#3987e5; --z2:#f2794a; --z3:#2ac78d; --z4:#d9a21f; --z5:#9085e9; --z6:#86877d;
+  --band:#202119; --soft:#1d2a3c; --ok:#2ac78d; --warn:#f2794a; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --surface:#131412; --panel:#1b1c1a; --line:#32332f; --line-soft:#262724;
+  --ink:#f1f1ec; --ink-2:#bdbeb4; --ink-3:#86877d;
+  --z1:#3987e5; --z2:#f2794a; --z3:#2ac78d; --z4:#d9a21f; --z5:#9085e9; --z6:#86877d;
+  --band:#202119; --soft:#1d2a3c; --ok:#2ac78d; --warn:#f2794a; color-scheme:dark;}
+body{background:var(--surface);color:var(--ink);font-family:var(--f-b);
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 40px}
+.wrap{max-width:1140px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+h1{font-family:var(--f-d);font-weight:700;font-size:clamp(1.5rem,3.4vw,2.05rem);
+  letter-spacing:-.018em;margin:0;line-height:1.12;text-wrap:balance}
+.sub{color:var(--ink-2);font-size:.94rem;margin:7px 0 0;max-width:66ch;line-height:1.5}
+h2{font-family:var(--f-d);font-weight:600;font-size:1.06rem;margin:0 0 3px;letter-spacing:-.01em}
+.h2s{font-size:.84rem;color:var(--ink-2);margin:0 0 15px;line-height:1.45}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(162px,1fr));gap:12px}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:14px 15px;
+  display:flex;flex-direction:column;gap:4px;min-width:0}
+.tile .c{font-size:.73rem;text-transform:uppercase;letter-spacing:.085em;color:var(--ink-3)}
+.tile .v{font-family:var(--f-d);font-weight:700;font-size:1.55rem;letter-spacing:-.022em;
+  font-variant-numeric:tabular-nums}
+.tile .s{font-size:.78rem;color:var(--ink-3)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:18px;min-width:0}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.lg{display:inline-flex;align-items:center;gap:6px;font-size:.79rem;color:var(--ink-2);
+  border:1px solid var(--line);border-radius:99px;padding:4px 10px}
+.dot{width:9px;height:9px;border-radius:2px;flex:none}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.bars{display:flex;flex-direction:column;gap:11px;margin-top:4px}
+.bar{display:grid;grid-template-columns:106px 1fr 112px;gap:11px;align-items:center}
+.bar .nm{font-size:.86rem;font-weight:500}
+.bar .tr{background:var(--band);border-radius:4px;height:20px;overflow:hidden}
+.bar .fl{height:100%;border-radius:4px}
+.bar .vl{font-size:.83rem;color:var(--ink-2);text-align:right;font-variant-numeric:tabular-nums}
+.bar .vl b{color:var(--ink);font-family:var(--f-d);font-weight:600;font-size:.95rem}
+.hit{display:grid;grid-template-columns:76px 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+.hit:last-child{border-bottom:0}
+.hit .d{font-family:var(--f-d);font-weight:600;font-size:.88rem;color:var(--ink)}
+.hit .t{font-size:.86rem;color:var(--ink-2);line-height:1.5}
+.hit .t b{color:var(--ink);font-weight:600}
+.flag{background:var(--soft);border:1px solid var(--line);border-left:3px solid var(--warn);
+  border-radius:8px;padding:14px 16px}
+.flag h3{font-family:var(--f-d);font-weight:600;font-size:.96rem;margin:0 0 7px}
+.flag p{margin:0;font-size:.87rem;color:var(--ink-2);line-height:1.6}
+.flag p+p{margin-top:8px}
+.chartbox{position:relative;width:100%}
+.tt{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);
+  border-radius:8px;padding:10px 12px;font-size:.79rem;box-shadow:0 6px 20px rgba(0,0,0,.15);
+  min-width:190px;opacity:0;transition:opacity .1s;z-index:6}
+.tt.on{opacity:1}
+.tt .dy{font-family:var(--f-d);font-weight:600;font-size:.88rem;margin-bottom:7px;color:var(--ink);
+  padding-bottom:6px;border-bottom:1px solid var(--line-soft)}
+.tt .rw{display:flex;align-items:center;gap:9px;justify-content:space-between;margin-top:4px;color:var(--ink-2)}
+.tt .rw b{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+.tt .lb{display:flex;align-items:center;gap:6px}
+.tt .sep{margin-top:7px;padding-top:6px;border-top:1px solid var(--line-soft)}
+.tt .hl{color:var(--z1);font-weight:600}
+.bar .tr{cursor:default}
+.bar:hover .fl{filter:brightness(1.08)}
+.tscroll{overflow-x:auto;margin-top:12px}
+table{border-collapse:collapse;width:100%;font-size:.82rem;font-variant-numeric:tabular-nums}
+th,td{padding:6px 10px;text-align:right;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+th{color:var(--ink-3);font-weight:600;font-size:.73rem;text-transform:uppercase;letter-spacing:.055em;
+  border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+tfoot td{font-weight:600;border-top:1px solid var(--line);border-bottom:0}
+details{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:14px 16px}
+summary{cursor:pointer;font-family:var(--f-d);font-weight:600;font-size:.95rem}
+summary:focus-visible{outline:2px solid var(--z1);outline-offset:3px}
+.src{font-size:.76rem;color:var(--ink-3);line-height:1.6;border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:560px){.bar{grid-template-columns:82px 1fr 92px;gap:8px}.panel{padding:14px 13px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<div class="wrap">
+  <header>
+    <h1>Adopción de Nagi por motorizados</h1>
+    <p class="sub">Del 22 de septiembre al 26 de octubre de 2026. Mide cuántos motorizados
+      llegaron a usar la billetera y con qué ritmo. Todo el despliegue es en Lima.</p>
+  </header>
+
+  <div class="tiles" id="tiles"></div>
+
+  <section class="panel">
+    <h2>Cómo creció la base de usuarios</h2>
+    <p class="h2s">Motorizados distintos que ya usaron la billetera, acumulado. Las líneas verticales
+      marcan los hitos del despliegue.</p>
+    <div class="chartbox" id="boxA">
+      <svg id="cAcum" viewBox="0 0 1000 330" role="img"
+           aria-label="Curva acumulada de motorizados que adoptaron la billetera"></svg>
+      <div class="tt" id="ttA"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Quién la está usando cada día</h2>
+    <p class="h2s">Motorizados activos por jornada, separados por transportadora.</p>
+    <div class="legend" id="legZ"></div>
+    <div class="chartbox" id="boxZ">
+      <svg id="cZona" viewBox="0 0 1000 300" role="img"
+           aria-label="Motorizados activos por día y por transportadora"></svg>
+      <div class="tt" id="ttZ"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Tasa de adopción por transportadora</h2>
+    <div class="bars" id="bars"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Uso por motorizado</h2>
+    <p class="h2s">Pedidos cobrados con billetera por cada motorizado. Color por transportadora.</p>
+    <div class="chartbox" id="boxM">
+      <svg id="cMoto" role="img" aria-label="Pedidos por motorizado"></svg>
+      <div class="tt" id="ttM"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Hitos contra lo que muestran los datos</h2>
+    <div id="hitos"></div>
+  </section>
+
+  <details>
+    <summary>Ver la tabla por transportadora</summary>
+    <div class="tscroll"><table id="tbl"></table></div>
+  </details>
+
+  <p class="src">Fuente: reportes de método de pago del 22/09 al 26/10/2026 y conciliación de depósitos de septiembre 2026.</p>
+</div>
+
+<script>
+const D = {"motos_det": [{"c":"E2-LIMA","t":"ALIDRIVER","ops":150,"monto":17213.02,"desde":"2026-10-10"},{"c":"C6-LIMA","t":"ALIDRIVER","ops":120,"monto":13167.0,"desde":"2026-10-10"},{"c":"N3-LIMA","t":"ALIDRIVER","ops":90,"monto":9155.0,"desde":"2026-10-10"},{"c":"N4-LIMA","t":"ALIDRIVER","ops":90,"monto":9937.0,"desde":"2026-10-10"},{"c":"N8-LIMA","t":"ALIDRIVER","ops":79,"monto":8441.01,"desde":"2026-10-10"},{"c":"E3-LIMA","t":"ALIDRIVER","ops":79,"monto":9880.0,"desde":"2026-10-10"},{"c":"E12-LIMA","t":"ALIDRIVER","ops":75,"monto":8295.0,"desde":"2026-10-12"},{"c":"S1-LIMA","t":"ALIDRIVER","ops":69,"monto":8630.9,"desde":"2026-10-10"},{"c":"E14-LIMA","t":"ALIDRIVER","ops":66,"monto":7296.0,"desde":"2026-10-13"},{"c":"E18-LIMA","t":"ALIDRIVER","ops":65,"monto":7016.0,"desde":"2026-10-13"},{"c":"C20-LIMA","t":"ALIDRIVER","ops":65,"monto":7265.0,"desde":"2026-10-14"},{"c":"E17-LIMA","t":"ALIDRIVER","ops":59,"monto":6324.0,"desde":"2026-10-13"},{"c":"E6-LIMA","t":"ALIDRIVER","ops":58,"monto":5986.0,"desde":"2026-10-13"},{"c":"C11-LIMA","t":"ALIDRIVER","ops":57,"monto":6440.0,"desde":"2026-10-17"},{"c":"E24-LIMA","t":"ALIDRIVER","ops":56,"monto":6406.0,"desde":"2026-10-13"},{"c":"E23-LIMA","t":"ALIDRIVER","ops":56,"monto":6819.0,"desde":"2026-10-12"},{"c":"E7-LIMA","t":"ALIDRIVER","ops":55,"monto":6381.0,"desde":"2026-10-13"},{"c":"C10-LIMA","t":"ALIDRIVER","ops":55,"monto":6731.0,"desde":"2026-10-15"},{"c":"E21-LIMA","t":"ALIDRIVER","ops":54,"monto":5883.0,"desde":"2026-10-13"},{"c":"E8-LIMA","t":"ALIDRIVER","ops":53,"monto":6198.91,"desde":"2026-10-13"},{"c":"C12-LIMA","t":"ALIDRIVER","ops":53,"monto":5837.0,"desde":"2026-10-16"},{"c":"C18-LIMA","t":"ALIDRIVER","ops":53,"monto":6510.0,"desde":"2026-10-19"},{"c":"C3-LIMA","t":"ALIDRIVER","ops":53,"monto":6567.0,"desde":"2026-10-15"},{"c":"E9-LIMA","t":"ALIDRIVER","ops":52,"monto":5468.0,"desde":"2026-10-12"},{"c":"C1-LIMA","t":"ALIDRIVER","ops":50,"monto":5717.01,"desde":"2026-10-14"},{"c":"M0-LIMA-AUTE","t":"AutoEcom Logistic","ops":49,"monto":5401.0,"desde":"2026-09-22"},{"c":"E5-LIMA","t":"ALIDRIVER","ops":47,"monto":5322.0,"desde":"2026-10-16"},{"c":"E10-LIMA","t":"ALIDRIVER","ops":46,"monto":5470.0,"desde":"2026-10-12"},{"c":"E1-LIMA","t":"ALIDRIVER","ops":46,"monto":5176.0,"desde":"2026-10-16"},{"c":"C16-LIMA","t":"ALIDRIVER","ops":44,"monto":4843.0,"desde":"2026-10-15"},{"c":"M11-LIMA-AUTE","t":"AutoEcom Logistic","ops":40,"monto":5100.03,"desde":"2026-10-10"},{"c":"E13-LIMA","t":"ALIDRIVER","ops":37,"monto":4281.0,"desde":"2026-10-14"},{"c":"E19-LIMA","t":"ALIDRIVER","ops":36,"monto":4226.0,"desde":"2026-10-13"},{"c":"M8-LIMA-AUTE","t":"AutoEcom Logistic","ops":36,"monto":4286.0,"desde":"2026-10-12"},{"c":"C8-LIMA","t":"ALIDRIVER","ops":36,"monto":4027.0,"desde":"2026-10-10"},{"c":"S19-LIMA","t":"ALIDRIVER","ops":35,"monto":3742.0,"desde":"2026-10-20"},{"c":"E15-LIMA","t":"ALIDRIVER","ops":31,"monto":3425.01,"desde":"2026-10-13"},{"c":"C17-LIMA","t":"ALIDRIVER","ops":30,"monto":3268.9,"desde":"2026-10-15"},{"c":"C7-LIMA","t":"ALIDRIVER","ops":30,"monto":3512.99,"desde":"2026-10-14"},{"c":"M18-LIMA-AUTE","t":"AutoEcom Logistic","ops":29,"monto":3995.01,"desde":"2026-10-12"},{"c":"C14-LIMA","t":"ALIDRIVER","ops":28,"monto":3501.0,"desde":"2026-10-10"},{"c":"M1-LIMA-AUTE","t":"AutoEcom Logistic","ops":26,"monto":3264.0,"desde":"2026-10-10"},{"c":"S11-LIMA","t":"ALIDRIVER","ops":23,"monto":2719.0,"desde":"2026-10-12"},{"c":"M3-LIMA-AUTE","t":"AutoEcom Logistic","ops":23,"monto":2802.0,"desde":"2026-09-26"},{"c":"E11-LIMA","t":"ALIDRIVER","ops":21,"monto":2588.0,"desde":"2026-10-12"},{"c":"M16-LIMA-AUTE","t":"AutoEcom Logistic","ops":19,"monto":2401.01,"desde":"2026-10-12"},{"c":"C27-LIMA","t":"ALIDRIVER","ops":17,"monto":2058.99,"desde":"2026-10-16"},{"c":"M2-LIMA-AUTE","t":"AutoEcom Logistic","ops":9,"monto":1070.0,"desde":"2026-10-10"},{"c":"C9-LIMA","t":"ALIDRIVER","ops":8,"monto":763.0,"desde":"2026-10-14"},{"c":"C15-LIMA","t":"ALIDRIVER","ops":6,"monto":714.0,"desde":"2026-10-22"},{"c":"PRUEBA2026","t":"ALIDRIVER","ops":3,"monto":461.0,"desde":"2026-09-23"},{"c":"C26-LIMA","t":"ALIDRIVER","ops":2,"monto":348.0,"desde":"2026-10-16"},{"c":"M15-LIMA-AUTE","t":"AutoEcom Logistic","ops":2,"monto":218.0,"desde":"2026-10-12"}], "serie": [{"f": "2026-09-22", "ALIDRIVER": 0, "AutoEcom Logistic": 1, "ops": 2, "monto": 238.0, "acum": 1}, {"f": "2026-09-23", "ALIDRIVER": 1, "AutoEcom Logistic": 1, "ops": 5, "monto": 759.0, "acum": 2}, {"f": "2026-09-24", "ALIDRIVER": 0, "AutoEcom Logistic": 1, "ops": 3, "monto": 287.0, "acum": 2}, {"f": "2026-09-26", "ALIDRIVER": 0, "AutoEcom Logistic": 2, "ops": 17, "monto": 2024.0, "acum": 3}, {"f": "2026-09-28", "ALIDRIVER": 0, "AutoEcom Logistic": 1, "ops": 7, "monto": 723.0, "acum": 3}, {"f": "2026-09-29", "ALIDRIVER": 0, "AutoEcom Logistic": 1, "ops": 10, "monto": 1040.0, "acum": 3}, {"f": "2026-10-01", "ALIDRIVER": 0, "AutoEcom Logistic": 1, "ops": 8, "monto": 822.0, "acum": 3}, {"f": "2026-10-03", "ALIDRIVER": 0, "AutoEcom Logistic": 1, "ops": 9, "monto": 1100.0, "acum": 3}, {"f": "2026-10-10", "ALIDRIVER": 10, "AutoEcom Logistic": 3, "ops": 76, "monto": 8320.0, "acum": 15}, {"f": "2026-10-12", "ALIDRIVER": 15, "AutoEcom Logistic": 7, "ops": 111, "monto": 12489.02, "acum": 25}, {"f": "2026-10-13", "ALIDRIVER": 22, "AutoEcom Logistic": 6, "ops": 162, "monto": 18905.03, "acum": 35}, {"f": "2026-10-14", "ALIDRIVER": 28, "AutoEcom Logistic": 4, "ops": 144, "monto": 16314.03, "acum": 40}, {"f": "2026-10-15", "ALIDRIVER": 29, "AutoEcom Logistic": 2, "ops": 146, "monto": 17599.99, "acum": 44}, {"f": "2026-10-16", "ALIDRIVER": 33, "AutoEcom Logistic": 4, "ops": 149, "monto": 18161.0, "acum": 49}, {"f": "2026-10-17", "ALIDRIVER": 29, "AutoEcom Logistic": 4, "ops": 155, "monto": 17216.0, "acum": 50}, {"f": "2026-10-19", "ALIDRIVER": 37, "AutoEcom Logistic": 6, "ops": 243, "monto": 26811.01, "acum": 51}, {"f": "2026-10-20", "ALIDRIVER": 36, "AutoEcom Logistic": 5, "ops": 233, "monto": 26600.0, "acum": 52}, {"f": "2026-10-21", "ALIDRIVER": 34, "AutoEcom Logistic": 3, "ops": 177, "monto": 20548.9, "acum": 52}, {"f": "2026-10-22", "ALIDRIVER": 36, "AutoEcom Logistic": 3, "ops": 206, "monto": 23006.89, "acum": 53}, {"f": "2026-10-23", "ALIDRIVER": 36, "AutoEcom Logistic": 4, "ops": 178, "monto": 20444.01, "acum": 53}, {"f": "2026-10-24", "ALIDRIVER": 29, "AutoEcom Logistic": 4, "ops": 153, "monto": 17067.0, "acum": 53}, {"f": "2026-10-26", "ALIDRIVER": 37, "AutoEcom Logistic": 5, "ops": 277, "monto": 32071.91, "acum": 53}], "trs": [{"t": "ALIDRIVER", "usan": 44, "univ": 106, "pct": 41.5, "ops": 2238, "monto": 254010.74}, {"t": "AutoEcom Logistic", "usan": 9, "univ": 17, "pct": 52.9, "ops": 233, "monto": 28537.05}], "tot_ops": 2471, "tot_monto": 282547.79, "motos": 53, "univ": 123};
+const SVG='http://www.w3.org/2000/svg';
+const el=(n,a)=>{const e=document.createElementNS(SVG,n);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const COL={'ALIDRIVER':'var(--z1)','AutoEcom Logistic':'var(--z2)'};
+const ZL=['ALIDRIVER','AutoEcom Logistic'];
+const S=D.serie, N=S.length;
+const dLbl=s=>{const[y,m,d]=s.split('-');return d+'/'+m;};
+const nf=n=>n.toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+// tiles
+const pico=Math.max(...S.map(s=>ZL.reduce((a,z)=>a+s[z],0)));
+document.getElementById('tiles').innerHTML=[
+ ['Motorizados que la usan',D.motos,`de ${D.univ} que operaron en septiembre`],
+ ['Tasa de adopción',(D.motos/D.univ*100).toFixed(0)+'%',`${D.univ-D.motos} todavía no la usan`],
+ ['Pico de uso diario',pico,'motorizados activos en un día'],
+ ['Pedidos cobrados',D.tot_ops.toLocaleString('es-PE'),'en 35 días'],
+ ['Monto cobrado','S/ '+nf(D.tot_monto),'por billetera digital']
+].map(([c,v,s])=>`<div class="tile"><div class="c">${c}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
+
+const idx=f=>{let b=0,bd=9e9;S.forEach((s,i)=>{const d=Math.abs(new Date(s.f)-new Date(f));if(d<bd){bd=d;b=i;}});return b;};
+const HIT=[['22 sep','Primer cobro con billetera. Arranca el piloto con <b>1 motorizado</b> de AutoEcom.',idx('2026-09-22')],
+           ['10 oct','Capacitación a zonales. <b>Es el verdadero punto de quiebre</b>: la base salta de 3 a 15 motorizados el mismo día.',idx('2026-10-10')],
+           ['12 oct','Se consolida: <b>+10 altas</b> en una jornada y 22 activos de ALIDRIVER.',idx('2026-10-12')],
+           ['21 oct','Despliegue informado a Lima Norte y Sur. <b>Sin altas nuevas.</b>',idx('2026-10-21')]];
+document.getElementById('hitos').innerHTML=HIT.map(([d,t])=>
+  `<div class="hit"><div class="d">${d}</div><div class="t">${t}</div></div>`).join('');
+
+// ── curva acumulada ──
+(function(){
+  const svg=document.getElementById('cAcum'), W=1000,H=330,M={t:18,r:18,b:34,l:48};
+  const iw=W-M.l-M.r, ih=H-M.t-M.b, mx=55;
+  const X=i=>M.l+i/(N-1)*iw, Y=v=>M.t+ih-v/mx*ih;
+  for(let v=0;v<=mx;v+=11){
+    svg.appendChild(el('line',{x1:M.l,y1:Y(v),x2:W-M.r,y2:Y(v),stroke:'var(--line-soft)','stroke-width':1}));
+    const t=el('text',{x:M.l-9,y:Y(v)+4,'text-anchor':'end','font-size':11,fill:'var(--ink-3)'});
+    t.textContent=v; svg.appendChild(t);
+  }
+  HIT.forEach(([d,,i])=>{
+    svg.appendChild(el('line',{x1:X(i),y1:M.t,x2:X(i),y2:M.t+ih,stroke:'var(--ink-3)',
+      'stroke-width':1,'stroke-dasharray':'3 3'}));
+    const t=el('text',{x:X(i)+5,y:M.t+12,'font-size':10.5,fill:'var(--ink-3)'});
+    t.textContent=d; svg.appendChild(t);
+  });
+  const pts=S.map((s,i)=>`${X(i).toFixed(1)},${Y(s.acum).toFixed(1)}`);
+  svg.appendChild(el('path',{d:`M ${X(0)},${Y(0)} L `+pts.join(' L ')+` L ${X(N-1)},${Y(0)} Z`,
+    fill:'var(--z1)','fill-opacity':.1}));
+  svg.appendChild(el('path',{d:'M '+pts.join(' L '),fill:'none',stroke:'var(--z1)',
+    'stroke-width':2.4,'stroke-linejoin':'round'}));
+  S.forEach((s,i)=>{ if(i&&s.acum>S[i-1].acum)
+    svg.appendChild(el('circle',{cx:X(i),cy:Y(s.acum),r:3.4,fill:'var(--z1)'})); });
+  const lab=el('text',{x:X(N-1)-6,y:Y(S[N-1].acum)-11,'text-anchor':'end','font-size':13,
+    fill:'var(--ink)','font-weight':700}); lab.textContent=S[N-1].acum+' motorizados'; svg.appendChild(lab);
+  svg.appendChild(el('line',{x1:M.l,y1:M.t+ih,x2:W-M.r,y2:M.t+ih,stroke:'var(--line)','stroke-width':1}));
+  S.forEach((s,i)=>{ if(i%4===0||i===N-1){
+    const t=el('text',{x:X(i),y:H-M.b+18,'text-anchor':'middle','font-size':11,fill:'var(--ink-3)'});
+    t.textContent=dLbl(s.f); svg.appendChild(t);}});
+
+  const cl=el('line',{y1:M.t,y2:M.t+ih,stroke:'var(--ink-3)','stroke-width':1,
+    'stroke-dasharray':'3 3',opacity:0}); svg.appendChild(cl);
+  const mk=el('circle',{r:5.4,fill:'var(--z1)',stroke:'var(--panel)','stroke-width':2.2,opacity:0});
+  svg.appendChild(mk);
+  const box=document.getElementById('boxA'), tt=document.getElementById('ttA');
+  const DIA=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const mv=ev=>{
+    const rc=svg.getBoundingClientRect();
+    const px=((ev.touches?ev.touches[0].clientX:ev.clientX)-rc.left)/rc.width*W;
+    let i=Math.round((px-M.l)/iw*(N-1)); i=Math.max(0,Math.min(N-1,i));
+    const s=S[i], altas=i?s.acum-S[i-1].acum:s.acum;
+    cl.setAttribute('x1',X(i)); cl.setAttribute('x2',X(i)); cl.setAttribute('opacity',1);
+    mk.setAttribute('cx',X(i)); mk.setAttribute('cy',Y(s.acum)); mk.setAttribute('opacity',1);
+    const [yy,mm,dd]=s.f.split('-');
+    const wd=DIA[new Date(+yy,+mm-1,+dd).getDay()];
+    tt.innerHTML=`<div class="dy">${dd}/${mm} · ${wd}</div>`+
+      `<div class="rw"><span class="lb">Acumulado</span><b>${s.acum} motorizados</b></div>`+
+      `<div class="rw"><span class="lb">Altas del día</span><b class="${altas?'hl':''}">${altas?'+'+altas:'0'}</b></div>`+
+      `<div class="rw sep"><span class="lb">Activos ese día</span><b>${ZL.reduce((a,z)=>a+s[z],0)}</b></div>`+
+      `<div class="rw"><span class="lb">Pedidos</span><b>${s.ops}</b></div>`+
+      `<div class="rw"><span class="lb">Monto</span><b>S/ ${nf(s.monto)}</b></div>`;
+    tt.classList.add('on');
+    const bw=box.getBoundingClientRect(), lx=X(i)/W*bw.width;
+    tt.style.left=Math.min(Math.max(lx+16,0),Math.max(0,bw.width-tt.offsetWidth-4))+'px';
+    tt.style.top='8px';
+  };
+  svg.addEventListener('mousemove',mv);
+  svg.addEventListener('touchmove',e=>{mv(e);e.preventDefault();},{passive:false});
+  svg.addEventListener('mouseleave',()=>{tt.classList.remove('on');
+    cl.setAttribute('opacity',0); mk.setAttribute('opacity',0);});
+})();
+
+// ── activos por zona (área apilada) ──
+(function(){
+  const svg=document.getElementById('cZona'), W=1000,H=300,M={t:16,r:18,b:34,l:48};
+  const iw=W-M.l-M.r, ih=H-M.t-M.b, mx=45;
+  const X=i=>M.l+i/(N-1)*iw, Y=v=>M.t+ih-v/mx*ih;
+  for(let v=0;v<=mx;v+=15){
+    svg.appendChild(el('line',{x1:M.l,y1:Y(v),x2:W-M.r,y2:Y(v),stroke:'var(--line-soft)','stroke-width':1}));
+    const t=el('text',{x:M.l-9,y:Y(v)+4,'text-anchor':'end','font-size':11,fill:'var(--ink-3)'});
+    t.textContent=v; svg.appendChild(t);
+  }
+  const base=new Array(N).fill(0);
+  ZL.forEach(z=>{
+    const top=S.map((s,i)=>base[i]+s[z]);
+    const up=top.map((v,i)=>`${X(i).toFixed(1)},${Y(v).toFixed(1)}`);
+    const dn=base.map((v,i)=>`${X(N-1-i).toFixed(1)},${Y(base[N-1-i]).toFixed(1)}`);
+    svg.appendChild(el('path',{d:'M '+up.join(' L ')+' L '+dn.join(' L ')+' Z',
+      fill:COL[z],'fill-opacity':.82,stroke:'var(--panel)','stroke-width':.8}));
+    top.forEach((v,i)=>base[i]=v);
+  });
+  svg.appendChild(el('line',{x1:M.l,y1:M.t+ih,x2:W-M.r,y2:M.t+ih,stroke:'var(--line)','stroke-width':1}));
+  S.forEach((s,i)=>{ if(i%4===0||i===N-1){
+    const t=el('text',{x:X(i),y:H-M.b+18,'text-anchor':'middle','font-size':11,fill:'var(--ink-3)'});
+    t.textContent=dLbl(s.f); svg.appendChild(t);}});
+  document.getElementById('legZ').innerHTML=ZL.map(z=>
+    `<span class="lg"><span class="dot" style="background:${COL[z]}"></span>${z}</span>`).join('');
+
+  const cl=el('line',{y1:M.t,y2:M.t+ih,stroke:'var(--ink)','stroke-width':1.2,
+    'stroke-dasharray':'3 3',opacity:0}); svg.appendChild(cl);
+  const gp=el('g',{}); svg.appendChild(gp);
+  const box=document.getElementById('boxZ'), tt=document.getElementById('ttZ');
+  const DIA=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const mv=ev=>{
+    const rc=svg.getBoundingClientRect();
+    const px=((ev.touches?ev.touches[0].clientX:ev.clientX)-rc.left)/rc.width*W;
+    let i=Math.round((px-M.l)/iw*(N-1)); i=Math.max(0,Math.min(N-1,i));
+    const s=S[i], tot=ZL.reduce((a,z)=>a+s[z],0);
+    cl.setAttribute('x1',X(i)); cl.setAttribute('x2',X(i)); cl.setAttribute('opacity',1);
+    gp.textContent='';
+    let ac=0;
+    ZL.forEach(z=>{ if(s[z]){ ac+=s[z];
+      gp.appendChild(el('circle',{cx:X(i),cy:Y(ac),r:4,fill:COL[z],
+        stroke:'var(--panel)','stroke-width':1.8})); }});
+    const [yy,mm,dd]=s.f.split('-');
+    const wd=DIA[new Date(+yy,+mm-1,+dd).getDay()];
+    const filas=ZL.filter(z=>s[z]>0).map(z=>
+      `<div class="rw"><span class="lb"><span class="dot" style="background:${COL[z]}"></span>${z}</span><b>${s[z]}</b></div>`).join('');
+    tt.innerHTML=`<div class="dy">${dd}/${mm} · ${wd}</div>`+
+      (filas||`<div class="rw"><span class="lb">Sin actividad</span><b>0</b></div>`)+
+      `<div class="rw sep"><span class="lb">Total activos</span><b>${tot}</b></div>`+
+      `<div class="rw"><span class="lb">Pedidos</span><b>${s.ops}</b></div>`+
+      `<div class="rw"><span class="lb">Monto</span><b>S/ ${nf(s.monto)}</b></div>`;
+    tt.classList.add('on');
+    const bw=box.getBoundingClientRect(), lx=X(i)/W*bw.width;
+    tt.style.left=Math.min(Math.max(lx+16,0),Math.max(0,bw.width-tt.offsetWidth-4))+'px';
+    tt.style.top='8px';
+  };
+  svg.addEventListener('mousemove',mv);
+  svg.addEventListener('touchmove',e=>{mv(e);e.preventDefault();},{passive:false});
+  svg.addEventListener('mouseleave',()=>{tt.classList.remove('on');
+    cl.setAttribute('opacity',0); gp.textContent='';});
+})();
+
+// ── barras de adopción ──
+document.getElementById('bars').innerHTML=D.trs.map(z=>
+  `<div class="bar" title="${z.t}: ${z.usan} de ${z.univ} motorizados usan la billetera (${z.pct.toFixed(1)}%). ${z.ops.toLocaleString('es-PE')} pedidos por S/ ${nf(z.monto)}. Faltan ${z.univ-z.usan} por sumar.">
+   <div class="nm">${z.t}</div>
+   <div class="tr"><div class="fl" style="width:${Math.max(z.pct,1.2)}%;background:${COL[z.t]}"></div></div>
+   <div class="vl"><b>${z.pct.toFixed(0)}%</b> · ${z.usan}/${z.univ}</div></div>`).join('');
+
+// ── tabla ──
+document.getElementById('tbl').innerHTML=
+ `<thead><tr><th>Transportadora</th><th>Usan</th><th>Universo</th><th>Adopción</th><th>Pedidos</th><th>Monto S/</th></tr></thead><tbody>`+
+ D.trs.map(z=>`<tr><td>${z.t}</td><td>${z.usan}</td><td>${z.univ}</td>
+   <td>${z.pct.toFixed(1)}%</td><td>${z.ops.toLocaleString('es-PE')}</td>
+   <td>${nf(z.monto)}</td></tr>`).join('')+
+ `</tbody><tfoot><tr><td>Total</td><td>${D.motos}</td><td>${D.univ}</td>
+   <td>${(D.motos/D.univ*100).toFixed(1)}%</td><td>${D.tot_ops.toLocaleString('es-PE')}</td>
+   <td>${nf(D.tot_monto)}</td></tr></tfoot>`;
+
+// ── barras horizontales por motorizado ──
+(function(){
+  const M_=D.motos_det, NM=M_.length, maxOps=M_[0].ops;
+  const barH=22, gap=4, labelW=110, valW=56;
+  const ML={t:6,r:12,b:8,l:0};
+  const W=1000, H=ML.t+(barH+gap)*NM+ML.b;
+  const svg=document.getElementById('cMoto');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const iw=W-labelW-valW-ML.r-ML.l;
+  M_.forEach((m,i)=>{
+    const y=ML.t+i*(barH+gap);
+    const bw=Math.max(m.ops/maxOps*iw,2);
+    const col=COL[m.t]||'var(--ink-3)';
+    // label
+    const lb=el('text',{x:labelW-8,y:y+barH/2+4.5,'text-anchor':'end','font-size':11.5,
+      fill:'var(--ink)','font-weight':500,'font-family':'var(--f-b)'});
+    lb.textContent=m.c; svg.appendChild(lb);
+    // bar
+    svg.appendChild(el('rect',{x:labelW,y:y,width:bw,height:barH,rx:3,fill:col,'fill-opacity':.85}));
+    // value
+    const vt=el('text',{x:labelW+bw+7,y:y+barH/2+4.5,'text-anchor':'start','font-size':11,
+      fill:'var(--ink-2)','font-variant-numeric':'tabular-nums'});
+    vt.textContent=m.ops; svg.appendChild(vt);
+  });
+  // tooltip
+  const box=document.getElementById('boxM'), tt=document.getElementById('ttM');
+  const mv=ev=>{
+    const rc=svg.getBoundingClientRect();
+    const py=((ev.touches?ev.touches[0].clientY:ev.clientY)-rc.top)/rc.height*H;
+    let i=Math.floor((py-ML.t)/(barH+gap));
+    i=Math.max(0,Math.min(NM-1,i));
+    const m=M_[i];
+    const [yy,mm,dd]=m.desde.split('-');
+    tt.innerHTML=`<div class="dy">${m.c}</div>`+
+      `<div class="rw"><span class="lb"><span class="dot" style="background:${COL[m.t]}"></span>${m.t}</span></div>`+
+      `<div class="rw"><span class="lb">Pedidos</span><b>${m.ops}</b></div>`+
+      `<div class="rw"><span class="lb">Monto</span><b>S/ ${nf(m.monto)}</b></div>`+
+      `<div class="rw"><span class="lb">Desde</span><b>${dd}/${mm}/${yy}</b></div>`;
+    tt.classList.add('on');
+    const bw=box.getBoundingClientRect();
+    const ly=(ML.t+i*(barH+gap))/H*bw.height;
+    tt.style.top=Math.min(Math.max(ly-30,0),Math.max(0,bw.height-tt.offsetHeight-4))+'px';
+    tt.style.left=Math.min(bw.width*0.55,Math.max(0,bw.width-tt.offsetWidth-8))+'px';
+  };
+  svg.addEventListener('mousemove',mv);
+  svg.addEventListener('touchmove',e=>{mv(e);e.preventDefault();},{passive:false});
+  svg.addEventListener('mouseleave',()=>tt.classList.remove('on'));
+})();
+</script>
+
+</body></html>
