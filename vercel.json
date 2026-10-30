@@ -1,0 +1,6 @@
+  {
+    "cleanUrls": true,
+    "rewrites": [
+      { "source": "/", "destination": "/Recaudacion_Diaria_Septiembre.html" }
+    ]
+  }
